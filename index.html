@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CreatorSpark AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101322;color:#f5f6ff;font-family:Arial,sans-serif}
+header{text-align:center;padding:35px 15px;background:#191e35}
+h1{margin:0;color:#8cf5ce;font-size:34px}
+header p{color:#c6c9dc}
+main{max-width:700px;margin:28px auto;padding:20px}
+.card{background:#1b2037;padding:24px;border-radius:16px}
+label{display:block;margin:15px 0 7px}
+input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #444b68;background:#101322;color:white;font-size:16px}
+button{margin-top:18px;padding:13px;border:0;border-radius:8px;background:#8cf5ce;color:#101322;font-size:16px;font-weight:bold;cursor:pointer}
+button:hover{opacity:.85}
+#output{min-height:150px;margin-top:10px}
+.note{color:#b7bdd3;font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<header>
+<h1>CreatorSpark AI ✨</h1>
+<p>Smart marketing content for every business</p>
+</header>
+<main>
+<div class="card">
+<h2>Create your advertisement</h2>
+<p>Generate a promotional caption for your product or business.</p>
+
+<label for="business">Business name</label>
+<input id="business" placeholder="e.g. SF Automobile Technology">
+
+<label for="product">Product or service</label>
+<input id="product" placeholder="e.g. Electric motorcycle">
+
+<label for="audience">Target customers</label>
+<input id="audience" placeholder="e.g. Motorcycle buyers in Bangladesh">
+
+<label for="language">Language</label>
+<select id="language">
+<option value="English">English</option>
+<option value="Bangla">বাংলা (Bangla)</option>
+</select>
+
+<label for="tone">Style</label>
+<select id="tone">
+<option value="Friendly">Friendly</option>
+<option value="Professional">Professional</option>
+<option value="Exciting">Exciting</option>
+</select>
+
+<button onclick="generate()">Generate marketing caption</button>
+
+<label for="output">Your caption</label>
+<textarea id="output" rows="9" placeholder="Your generated caption will appear here..."></textarea>
+
+<button onclick="copyText()">Copy caption</button>
+<p class="note">Prototype version: uses built-in templates, not a live AI service. Review all claims before publishing.</p>
+</div>
+</main>
+<script>
+function generate(){
+ const business=document.getElementById('business').value.trim()||'Our Business';
+ const product=document.getElementById('product').value.trim()||'our product';
+ const audience=document.getElementById('audience').value.trim()||'valued customers';
+ const language=document.getElementById('language').value;
+ const tone=document.getElementById('tone').value;
+ let result='';
+ if(language==='Bangla'){
+  const opening=tone==='Exciting'?'দারুণ খবর!':tone==='Professional'?'আপনাদের জন্য আমাদের বিশেষ উপস্থাপনা।':'আপনাদের জন্য রইল আন্তরিক শুভেচ্ছা!';
+  result=opening+'\n\n'+business+' নিয়ে এসেছে '+product+'। '+audience+'-দের জন্য আমাদের পণ্য সম্পর্কে বিস্তারিত জানতে আজই যোগাযোগ করুন।\n\nআপনার প্রয়োজন ও পছন্দ অনুযায়ী সঠিক তথ্য জেনে সিদ্ধান্ত নিন।\n\nযোগাযোগ করুন: '+business+'\n\n#বাংলাদেশ #ব্যবসা #'+product.replace(/\s+/g,'');
+ }else{
+  const opening=tone==='Exciting'?'Great news!':tone==='Professional'?'Introducing a solution from '+business+'.':'Hello, valued customers!';
+  result=opening+'\n\nDiscover '+product+' from '+business+', designed with '+audience+' in mind.\n\nWant to learn more? Contact us today to explore the details and find the right option for your needs.\n\nChoose with confidence. Ask us for product information and availability.\n\n#Business #'+product.replace(/\s+/g,'');
+ }
+ document.getElementById('output').value=result;
+}
+function copyText(){
+ const output=document.getElementById('output');
+ if(!output.value){alert('Generate a caption first.');return;}
+ output.select();
+ if(navigator.clipboard&&window.isSecureContext){
+  navigator.clipboard.writeText(output.value).then(()=>alert('Caption copied!')).catch(()=>fallbackCopy(output));
+ }else{fallbackCopy(output);}
+}
+function fallbackCopy(output){
+ try{document.execCommand('copy');alert('Caption copied!');}
+ catch(e){alert('Please select the caption and press Ctrl+C.');}
+}
+</script>
+</body>
+</html>
